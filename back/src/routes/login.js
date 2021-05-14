@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const validations = require('../utils/validators');
 const mongoUtils = require('../utils/mongoUtils');
+const { requestNewTokens } = require('../modules/authorization');
 const bcrypt = require('bcrypt');
+
+const client = require('../utils/redisClient');
 
 router.post('/', async function (req, res) {
   const { username, password } = req.body;
@@ -18,7 +21,8 @@ router.post('/', async function (req, res) {
     const identical = await bcrypt.compare(password, data.password);
 
     if (identical) {
-      res.json({ text: 'logged', code: 200 });
+      const tokens = await requestNewTokens(data.username, client);
+      res.json(tokens);
       return;
     } else {
       res.json({ text: 'Invalid credentials', code: 404 });

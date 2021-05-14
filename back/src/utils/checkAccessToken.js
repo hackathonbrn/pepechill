@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const privateKey = fs.readFileSync('Aprivate.key');
+const { privateKey1 } = require('./constants');
 const { promisify } = require('util');
 
 /**
@@ -8,14 +7,14 @@ const { promisify } = require('util');
  * @param {String} token - access token
  */
 async function checkAccessToken(redisClient, token) {
-  //   redisClient.sendCommand('SELECT 0');
+  redisClient.sendCommand('SELECT', ['0']);
 
   const getAsync = promisify(redisClient.get).bind(redisClient);
   let res = await getAsync(token);
 
   if (res) {
     try {
-      jwt.verify(token, privateKey);
+      jwt.verify(token, privateKey1);
     } catch (error) {
       console.log('Wrong access token. Error: ', error);
       return false;

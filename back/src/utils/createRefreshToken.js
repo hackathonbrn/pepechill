@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const privateKey = fs.readFileSync('Rprivate.key');
+const { privateKey2 } = require('./constants');
 const { promisify } = require('util');
 
 async function createRefreshToken(redisClient, data) {
-  const refreshToken = jwt.sign(data, privateKey);
+  redisClient.sendCommand('SELECT', ['1']);
+
+  const refreshToken = jwt.sign({ data }, privateKey2, { expiresIn: '7d' });
 
   const setAsync = promisify(redisClient.set).bind(redisClient);
 

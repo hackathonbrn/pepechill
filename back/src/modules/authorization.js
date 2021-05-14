@@ -34,13 +34,11 @@ async function requestNewAccessToken(req, res, redisClient) {
   res.json({ accessToken });
 }
 
-async function requestNewTokens(req, res, redisClient) {
-  const data = req.body.username;
-
+async function requestNewTokens(data, redisClient) {
   const accessToken = await createAccessToken(redisClient, data);
   const refreshToken = await createRefreshToken(redisClient, data);
 
-  res.json({ accessToken, refreshToken });
+  return { accessToken, refreshToken };
 }
 
 module.exports = {

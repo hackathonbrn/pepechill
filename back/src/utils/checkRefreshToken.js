@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const privateKey = fs.readFileSync('Rprivate.key');
+const { privateKey2 } = require('./constants');
 const { promisify } = require('util');
 
 /**
@@ -8,14 +7,14 @@ const { promisify } = require('util');
  * @param {String} token - refresh token
  */
 async function checkRefreshToken(redisClient, token) {
-  redisClient.sendCommand('SELECT 1');
+  redisClient.sendCommand('SELECT', ['1']);
 
   const getAsync = promisify(redisClient.get).bind(redisClient);
   let res = await getAsync(token);
 
   if (res) {
     try {
-      jwt.verify(token, privateKey);
+      jwt.verify(token, privateKey2);
     } catch (error) {
       console.log('Wrong refresh token. Error: ', error);
       return false;

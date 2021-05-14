@@ -1,26 +1,19 @@
-const checkAccessToken = require('../../utils/checkAccessToken');
+const checkAccessToken = require('../utils/checkAccessToken');
 
-const tokenRegexp = /[a-z-A-Z\d._]/gm;
+const client = require('../utils/redisClient');
 
-function authCheck(redisClient) {
-  return async (req, res, next) => {
-    const token = req.headers.authorization;
+async function authCheck(req, res, next) {
+  const token = req.headers.authorization;
 
-    if (!tokenRegexp.test(req.headers.authorization)) {
-      res.status(400);
-      res.json({ error: 'Wrong auth header', code: 400 });
-      return;
-    }
-
-    const isAccessTokenValid = await checkAccessToken(redisClient, token);
-
+  checkAccessToken(client, token).then(isAccessTokenValid => {
     if (isAccessTokenValid) {
-      next();
+      return;
     } else {
       res.status(400);
-      res.json({ error: 'Access token expired', error: 400 });
+      res.json({ error: 'Access token expired or invalid', code: 400 });
+      return;
     }
-  };
+  });
 }
 
 module.exports = authCheck;
