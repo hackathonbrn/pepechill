@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    environment:
+      - LOG_LEVEL=debug
+      - INSTRUMENTING=true
+    ports:
+      - "3022:8000"
+    restart: always
+    networks:
+      - pepechill
+
+networks:
+  pepechill:
+    external: true

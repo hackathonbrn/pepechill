@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:latest
+    command: redis-server --requirepass 12345
+    restart: always
+    ports:
+      - "6180:6379"
+    networks:
+      - pepechill
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    depends_on:
+      - redis
+    restart: always
+    ports:
+      - "8180:8081"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=12345
+      - HTTP_USER=pepechill
+      - HTTP_PASSWORD=12345
+    networks:
+      - pepechill
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=12345
+    volumes:
+      - mongodata:/data/db
+    restart: always
+    ports:
+      - "27055:27017"
+    networks:
+      - pepechill
+
+  mongo-express:
+    image: mongo-express
+    depends_on:
+      - mongo
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=12345
+      - ME_CONFIG_BASICAUTH_USERNAME=pepechill
+      - ME_CONFIG_BASICAUTH_PASSWORD=12345
+    restart: always
+    ports:
+      - "8055:8081"
+    networks:
+      - pepechill
+
+networks:
+  pepechill:
+    external: true
+
+volumes:
+  mongodata:
