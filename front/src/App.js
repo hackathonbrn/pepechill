@@ -25,7 +25,7 @@ import {
   IconButton,
   Icon,
 } from 'rsuite';
-import CreateActivity from './components/create-activity';
+// import CreateActivity from './components/create-activity';
 
 const App = () => {
   return (
