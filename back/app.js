@@ -3,26 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const MongoClient = require('mongodb').MongoClient;
 
 require('dotenv').config();
 
-const mongoClient = new MongoClient(process.env.MONGO_URL, { useUnifiedTopology: true });
-
-console.log('connection');
-
-mongoClient.connect(async (err, client) => {
-  const db = client.db('pepechill');
-
-  const collection = db.collection('users');
-  let data = await collection.find().toArray();
-
-  console.log(data);
-  client.close();
-});
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const indexRouter = require('./src/routes/index');
+const usersRouter = require('./src/routes/users');
+const registerRoute = require('./src/routes/register');
 
 const app = express();
 
@@ -38,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/', registerRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
