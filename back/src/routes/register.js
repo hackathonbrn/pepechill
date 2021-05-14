@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const validations = require('../utils/validators');
 const mongoUtils = require('../utils/mongoUtils');
+const bcrypt = require('bcrypt');
 
-router.post('/register', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   const { username, password, name } = req.body;
 
   if (!validations.usernameValidate(username) || !validations.passwordValidate(password)) {
     res.json({ text: 'Invalid credentials', code: 400 });
+    return;
   }
 
   const data = await mongoUtils.find('users', { username });
@@ -17,10 +19,14 @@ router.post('/register', async function (req, res, next) {
     return;
   }
 
-  await mongoUtils.insertOne('users', { username, password, name, activities: [] });
+  const hashedPass = await bcrypt.hash(password, 10);
+
+  const newUser = { username, password: hashedPass, name, activities: [] };
+
+  await mongoUtils.insertOne('users', newUser);
 
   res.status(200);
-  res.json({ username, name, activities: [] });
+  res.json({ text: 'Registration completed', code: 200 });
 });
 
 module.exports = router;

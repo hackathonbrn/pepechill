@@ -36,8 +36,20 @@ async function insertOne(collection, data) {
   client.close();
 }
 
+async function findOne(collection, query) {
+  const { db, client } = await connect();
+
+  const cl = db.collection(collection);
+  const data = await cl.findOne(query);
+
+  client.close();
+
+  return data;
+}
+
 module.exports = {
   connect,
   find,
+  findOne,
   insertOne,
 };

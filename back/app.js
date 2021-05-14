@@ -7,8 +7,8 @@ const logger = require('morgan');
 require('dotenv').config();
 
 const indexRouter = require('./src/routes/index');
-const usersRouter = require('./src/routes/users');
-const registerRoute = require('./src/routes/register');
+const loginRouter = require('./src/routes/login');
+const registerRouter = require('./src/routes/register');
 
 const app = express();
 
@@ -23,8 +23,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/', registerRoute);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
