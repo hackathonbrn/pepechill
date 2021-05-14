@@ -1,22 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
 import 'rsuite/dist/styles/rsuite-default.css';
+import ActivitiesItem from './components/activities-item';
+import ActivitiesList from './components/activities-list';
+import LoginPanel from './components/login-panel';
+import RegisterPanel from './components/register-panel';
+import Auth from './routes/auth';
 
-function App() {
+import {
+  FlexboxGrid,
+  ButtonToolbar,
+  Panel,
+  Content,
+  Container,
+  Form,
+  FormGroup,
+  FormControl,
+  Button,
+  ControlLabel,
+  Header,
+  Navbar,
+  Footer,
+  Progress,
+  IconButton,
+  Icon,
+} from 'rsuite';
+import CreateActivity from './components/create-activity';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
+    <div>
+      <RegisterPanel />
+      {/* <CreateActivity /> */}
+      {/* <ActivitiesList />
+      <IconButton size="md" icon={<Icon icon="search" />} circle />
+      <IconButton size="md" icon={<Icon icon="plus" />} circle /> */}
     </div>
   );
-}
+};
 
 export default App;
