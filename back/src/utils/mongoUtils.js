@@ -1,23 +1,43 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const mongoClient = new MongoClient(process.env.MONGO_URL, { useUnifiedTopology: true });
+async function connect() {
+  let client, db;
+  try {
+    client = await MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true });
+    db = client.db('pepechill');
+  } catch (err) {
+    return;
+  }
+  return { db, client };
+}
 
 /**
  *
  * @param {String} collection
- * @param {String} query
+ * @param {Object} query
  */
 async function find(collection, query) {
-  mongoClient.connect(async (err, client) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+  const { db, client } = await connect();
 
-    const db = client.db('pepechill');
-    const cl = db.collection(collection);
-    const data = await cl.find(query).toArray();
+  const cl = db.collection(collection);
+  const data = await cl.find(query).toArray();
 
-    return data;
-  });
+  client.close();
+
+  return data;
 }
+
+async function insertOne(collection, data) {
+  const { db, client } = await connect();
+
+  const cl = db.collection(collection);
+  await cl.insertOne(data);
+
+  client.close();
+}
+
+module.exports = {
+  connect,
+  find,
+  insertOne,
+};
