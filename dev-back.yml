@@ -9,7 +9,7 @@ services:
       - LOG_LEVEL=debug
       - INSTRUMENTING=true
     ports:
-      - "3022:8000"
+      - "3022:3022"
     restart: always
     networks:
       - pepechill
