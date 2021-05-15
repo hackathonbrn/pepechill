@@ -28,6 +28,8 @@ router.post('/', async function (req, res) {
       res.json({ text: 'Invalid credentials', code: 404 });
       return;
     }
+  } else {
+    res.json({ text: 'invalid credentials', code: 404 });
   }
 });
 

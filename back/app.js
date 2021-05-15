@@ -15,7 +15,7 @@ const registerRouter = require('./src/routes/register');
 const refreshTokenRouter = require('./src/routes/refresh-token');
 const challengesRouter = require('./src/routes/challenges');
 const challengeRouter = require('./src/routes/challenge');
-const test = require('./src/routes/test');
+const userRouter = require('./src/routes/user');
 
 const app = express();
 
@@ -33,12 +33,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('api/register', registerRouter);
-app.use('api/login', loginRouter);
-app.use('api/test', auth, test);
-app.use('api/update_refresh_token', refreshTokenRouter);
-app.use('api/challenges', auth, challengesRouter);
-app.use('api/challenge', auth, challengeRouter);
+app.use('/api/register', registerRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/update_tokens', refreshTokenRouter);
+app.use('/api/challenges', auth, challengesRouter);
+app.use('/api/challenge', auth, challengeRouter);
+app.use('/api/user', auth, userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

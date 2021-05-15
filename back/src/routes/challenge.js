@@ -33,11 +33,30 @@ router.delete('/', async function (req, res) {
 
   const challenge = await mongoUtils.findOne('challenges', { _id: ObjectId(id) });
 
+  const user = await mongoUtils.findOne('users', { username });
+
+  const challenges = user.challenges.filter(item => item !== id);
+
   const filteredUsers = challenge.users.filter(item => item.username !== username);
 
-  const updatedChallenge = await mongoUtils.updateOne('challenges', { _id: ObjectId(id) }, { users: filteredUsers });
+  await mongoUtils.updateOne('challenges', { _id: ObjectId(id) }, { users: filteredUsers });
 
-  res.json(updatedChallenge);
+  await mongoUtils.updateOne('users', { username: username }, { challenges: challenges });
+
+  res.json({ text: 'Challenge removed' });
+});
+
+router.post('/', async function (req, res) {
+  const { challenge } = req.body;
+
+  if (!challenge) {
+    res.json({ text: 'Wrong parameters', code: 400 });
+    return;
+  }
+
+  const challenge = await mongoUtils.insertOne('challenges', challenge);
+
+  res.json({ text: 'ok', code: 200 });
 });
 
 module.exports = router;

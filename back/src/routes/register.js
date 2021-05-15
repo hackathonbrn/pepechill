@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 router.post('/', async function (req, res, next) {
   const { username, password, name } = req.body;
 
-  if (!validations.usernameValidate(username) || !validations.passwordValidate(password)) {
+  if (!username || !password || !name || !validations.usernameValidate(username) || !validations.passwordValidate(password)) {
     res.json({ text: 'Invalid credentials', code: 400 });
     return;
   }

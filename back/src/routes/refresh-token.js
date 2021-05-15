@@ -17,9 +17,10 @@ router.post('/', async function (req, res) {
 
   if (isRefreshTokenValid) {
     const accessToken = await createAccessToken(client, username);
+    const refreshToken = await checkRefreshToken(client, username);
 
     res.status(200);
-    res.json({ accessToken });
+    res.json({ accessToken, refreshToken });
     return;
   } else {
     res.json({ text: 'Refresh token is invalid', code: 400 });
