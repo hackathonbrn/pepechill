@@ -4,25 +4,33 @@ import * as api from '../api/user';
 
 class UserStore {
   _user = undefined;
-
-  async getUser() {
-    let res;
-
-    try {
-      res = await api.getUser();
-    } catch (error) {
-      return;
-    }
-
-    this._user = res;
-  }
+  _loading = false;
 
   get user() {
     return this._user;
   }
 
+  get loading() {
+    return this._loading;
+  }
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  async getUser() {
+    let res;
+    this._loading = true;
+
+    try {
+      res = await api.getUser();
+    } catch (error) {
+      this._loading = false;
+      return;
+    }
+
+    this._user = res;
+    this._loading = false;
   }
 }
 

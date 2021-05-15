@@ -10,6 +10,10 @@ const userStore = getUserStore();
 class AuthStore {
   _loading = false;
 
+  get loading() {
+    return this._loading;
+  }
+
   async register(username, name, password) {
     this._loading = true;
 

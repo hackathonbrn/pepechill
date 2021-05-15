@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Row, Col } from 'rsuite';
+import { Row, Col, Loader } from 'rsuite';
 
 import ActivitiesItem from '../activities-item';
+import './activities-list.css';
 
 import { getStore } from '../../stores/activities';
 
@@ -15,21 +16,18 @@ const store = getStore();
 // ];
 
 const ActivitiesList = observer(() => {
-  useEffect(() => {
-    store.getActivities();
-  }, []);
+  // useEffect(() => {
+  //   store.getActivities();
+  // }, []);
 
   let arr = store.activities;
-  console.log(arr);
-  if (!arr) {
-    return <h1>nichego</h1>;
-  }
+  if (!arr) return <Row className="activities-list"></Row>;
 
   return (
-    <Row>
+    <Row className="activities-list">
       {arr.map(el => {
         return (
-          <Col key={el._id} md={6} sm={12}>
+          <Col key={el._id} lg={6} md={12} sm={24}>
             <ActivitiesItem {...el} />
           </Col>
         );

@@ -8,9 +8,14 @@ import LoginPage from './routes/login-page';
 import RegisterPage from './routes/register-page';
 import MainPage from './routes/main-page';
 
-import { getStore } from './stores/user';
+import { getStore as getUserStore } from './stores/user';
+import { getStore as getAuthStore } from './stores/auth';
+import { getStore as getActivitiesStore } from './stores/activities';
+import { Loader } from 'rsuite';
 
-const store = getStore();
+const userStore = getUserStore();
+const authStore = getAuthStore();
+const activityStore = getActivitiesStore();
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -36,18 +41,18 @@ function PublicRoute({ component: Component, authed, ...rest }) {
 
 const App = observer(() => {
   useEffect(() => {
-    store.getUser();
+    userStore.getUser();
   }, []);
+
+  if (userStore.loading || activityStore.loading || authStore.loading) return <Loader center size="lg" />;
 
   return (
     <Router>
-      <div>
-        <Switch>
-          <PrivateRoute authed={Boolean(store.user)} path="/" component={MainPage} exact />
-          <PublicRoute authed={Boolean(store.user)} path="/register" component={RegisterPage} />
-          <PublicRoute authed={Boolean(store.user)} path="/login" component={LoginPage} />
-        </Switch>
-      </div>
+      <Switch>
+        <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
+        <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
+        <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
+      </Switch>
     </Router>
   );
 });
