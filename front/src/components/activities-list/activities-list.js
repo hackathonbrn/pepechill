@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Row, Col } from 'rsuite';
 
@@ -15,13 +15,21 @@ const store = getStore();
 // ];
 
 const ActivitiesList = observer(() => {
-  let arr = store;
+  useEffect(() => {
+    store.getActivities();
+  }, []);
+
+  let arr = store.activities;
   console.log(arr);
+  if (!arr) {
+    return <h1>nichego</h1>;
+  }
+
   return (
     <Row>
       {arr.map(el => {
         return (
-          <Col md={6} sm={12}>
+          <Col key={el._id} md={6} sm={12}>
             <ActivitiesItem {...el} />
           </Col>
         );
