@@ -1,22 +1,7 @@
 import React from 'react';
 import ActivitiesItem from '../activities-item';
 
-import {
-  FlexboxGrid,
-  ButtonToolbar,
-  Panel,
-  Content,
-  Container,
-  Form,
-  FormGroup,
-  FormControl,
-  Button,
-  ControlLabel,
-  Header,
-  Navbar,
-  Footer,
-  Progress,
-} from 'rsuite';
+import { ButtonToolbar } from 'rsuite';
 
 const ActivitiesList = () => {
   return (
