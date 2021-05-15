@@ -31,6 +31,14 @@ class ActivitiesStore {
     this._loading = false;
   }
 
+  async createActivity(caption, text, target) {
+    try {
+      await api.createActivity({ caption, text, target });
+    } catch (error) {
+      return;
+    }
+  }
+
   constructor() {
     makeAutoObservable(this);
   }
