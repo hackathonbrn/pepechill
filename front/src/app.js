@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { Loader, Navbar, Nav, Icon } from 'rsuite';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 
@@ -11,7 +12,6 @@ import MainPage from './routes/main-page';
 import { getStore as getUserStore } from './stores/user';
 import { getStore as getAuthStore } from './stores/auth';
 import { getStore as getActivitiesStore } from './stores/activities';
-import { Loader } from 'rsuite';
 
 const userStore = getUserStore();
 const authStore = getAuthStore();
@@ -47,13 +47,28 @@ const App = observer(() => {
   if (userStore.loading || activityStore.loading || authStore.loading) return <Loader center size="lg" />;
 
   return (
-    <Router>
-      <Switch>
-        <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
-        <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
-        <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
-      </Switch>
-    </Router>
+    <div>
+      <Navbar appearance="inverse">
+        <Navbar.Header>PEPECHILL</Navbar.Header>
+        <Navbar.Body>
+          <Nav>
+            <Nav.Item icon={<Icon icon="home" />}>Home</Nav.Item>
+            <Nav.Item>News</Nav.Item>
+            <Nav.Item>Products</Nav.Item>
+          </Nav>
+          <Nav pullRight>
+            <Nav.Item icon={<Icon icon="cog" />}>Settings</Nav.Item>
+          </Nav>
+        </Navbar.Body>
+      </Navbar>
+      <Router>
+        <Switch>
+          <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
+          <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
+          <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
+        </Switch>
+      </Router>
+    </div>
   );
 });
 

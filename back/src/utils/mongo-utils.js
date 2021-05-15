@@ -31,6 +31,7 @@ async function insertOne(collection, data) {
   const { db, client } = await connect();
 
   const cl = db.collection(collection);
+  console.log(data);
   await cl.insertOne(data);
 
   client.close();

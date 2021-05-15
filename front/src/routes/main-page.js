@@ -12,6 +12,7 @@ import {
   FormControl,
   Slider,
 } from 'rsuite';
+import { runInAction } from 'mobx';
 
 import ActivitiesList from '../components/activities-list';
 
@@ -54,7 +55,12 @@ class MainPage extends Component {
               onChange={formValue => {
                 this.setState({ formValue });
               }}
-              onSubmit={() => activityStore.createActivity({ ...this.state.formValue, username: userStore.user.username })}
+              onSubmit={() =>
+                activityStore.createActivity({
+                  ...this.state.formValue,
+                  users: [{ username: userStore.user.username, records: [] }],
+                })
+              }
               fluid
             >
               <FormGroup>

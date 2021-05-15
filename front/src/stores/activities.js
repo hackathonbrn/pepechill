@@ -31,9 +31,15 @@ class ActivitiesStore {
     this._loading = false;
   }
 
-  async createActivity(caption, text, target, username) {
+  async createActivity(data) {
     try {
-      await api.createActivity({ caption, text, target, username });
+      await api.createActivity(data);
+    } catch (error) {
+      return;
+    }
+
+    try {
+      this.getActivities();
     } catch (error) {
       return;
     }

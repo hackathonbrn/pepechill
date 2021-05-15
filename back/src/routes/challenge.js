@@ -47,14 +47,22 @@ router.delete('/', async function (req, res) {
 });
 
 router.post('/', async function (req, res) {
-  const { challenge } = req.body;
+  const { caption, text, target, users } = req.body;
 
-  if (!challenge) {
+  if (!caption || !text || !target || !users) {
     res.json({ text: 'Wrong parameters', code: 400 });
     return;
   }
 
-  await mongoUtils.insertOne('challenges', challenge);
+
+console.log(users)
+  await mongoUtils.insertOne('challenges', { caption, target, text, users });
+  const m = await mongoUtils.findOne('challenges', { caption: caption, target: target, text: text });
+  const user = await mongoUtils.findOne('users', {username: users[0].username});
+
+  user.challenges.push(String(m._id));
+
+  await mongoUtils.updateOne('users', { username: users[0].username }, { challenges:user.challenges });
 
   res.json({ text: 'ok', code: 200 });
 });
