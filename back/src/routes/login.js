@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const validations = require('../utils/validators');
-const mongoUtils = require('../utils/mongoUtils');
+const mongoUtils = require('../utils/mongo-utils');
 const { requestNewTokens } = require('../modules/authorization');
 const bcrypt = require('bcrypt');
 
-const client = require('../utils/redisClient');
+const client = require('../utils/redis-client');
 
 router.post('/', async function (req, res) {
   const { username, password } = req.body;

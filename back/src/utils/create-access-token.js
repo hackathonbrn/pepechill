@@ -9,7 +9,7 @@ async function createAccessToken(redisClient, data) {
 
   const setAsync = promisify(redisClient.set).bind(redisClient);
 
-  await setAsync(accessToken, '1');
+  await setAsync(accessToken, data);
 
   return accessToken;
 }

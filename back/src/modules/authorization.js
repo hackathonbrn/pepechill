@@ -1,6 +1,6 @@
-const checkRefreshToken = require('../utils/checkRefreshToken');
-const createAccessToken = require('../utils/createAccessToken');
-const createRefreshToken = require('../utils/createRefreshToken');
+const checkRefreshToken = require('../utils/check-refresh-token');
+const createAccessToken = require('../utils/create-access-token');
+const createRefreshToken = require('../utils/create-refresh-token');
 
 const tokenRegexp = /[a-z-A-Z\d._]/gm;
 

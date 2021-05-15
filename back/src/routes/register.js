@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const validations = require('../utils/validators');
-const mongoUtils = require('../utils/mongoUtils');
+const mongoUtils = require('../utils/mongo-utils');
 const bcrypt = require('bcrypt');
 
 router.post('/', async function (req, res, next) {
@@ -21,7 +21,7 @@ router.post('/', async function (req, res, next) {
 
   const hashedPass = await bcrypt.hash(password, 10);
 
-  const newUser = { username, password: hashedPass, name, activities: [] };
+  const newUser = { username, password: hashedPass, name, challenges: [] };
 
   await mongoUtils.insertOne('users', newUser);
 

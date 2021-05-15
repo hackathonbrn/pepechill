@@ -47,9 +47,21 @@ async function findOne(collection, query) {
   return data;
 }
 
+async function updateOne(collection, query, updateData) {
+  const { db, client } = await connect();
+
+  const cl = db.collection(collection);
+  const data = await cl.updateOne(query, { $set: updateData });
+
+  client.close();
+
+  return data;
+}
+
 module.exports = {
   connect,
   find,
   findOne,
   insertOne,
+  updateOne,
 };

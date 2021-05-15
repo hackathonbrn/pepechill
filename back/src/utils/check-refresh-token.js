@@ -3,7 +3,7 @@ const { privateKey2 } = require('./constants');
 const { promisify } = require('util');
 
 /**
- * @param {*} redisClient - redis client
+ * @param redisClient - redis client
  * @param {String} token - refresh token
  */
 async function checkRefreshToken(redisClient, token) {

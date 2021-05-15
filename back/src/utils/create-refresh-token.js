@@ -9,7 +9,7 @@ async function createRefreshToken(redisClient, data) {
 
   const setAsync = promisify(redisClient.set).bind(redisClient);
 
-  await setAsync(refreshToken, '1');
+  await setAsync(refreshToken, data);
 
   return refreshToken;
 }

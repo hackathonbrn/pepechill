@@ -20,7 +20,7 @@ async function checkAccessToken(redisClient, token) {
       return false;
     }
 
-    return true;
+    return res;
   }
 
   return false;
