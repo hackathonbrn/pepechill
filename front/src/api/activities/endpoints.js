@@ -5,3 +5,9 @@ export async function getActivities() {
 
   return res.data;
 }
+
+export async function createActivity(data) {
+  const res = await axios.post('/api/challenge', data);
+
+  return res.data;
+}
