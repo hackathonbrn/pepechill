@@ -1,0 +1,7 @@
+.activities_item {
+  cursor: pointer;
+}
+
+.activities_item:hover {
+  opacity: 0.6;
+}
