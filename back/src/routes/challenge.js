@@ -54,15 +54,13 @@ router.post('/', async function (req, res) {
     return;
   }
 
-
-console.log(users)
   await mongoUtils.insertOne('challenges', { caption, target, text, users });
   const m = await mongoUtils.findOne('challenges', { caption: caption, target: target, text: text });
-  const user = await mongoUtils.findOne('users', {username: users[0].username});
+  const user = await mongoUtils.findOne('users', { username: users[0].username });
 
   user.challenges.push(String(m._id));
 
-  await mongoUtils.updateOne('users', { username: users[0].username }, { challenges:user.challenges });
+  await mongoUtils.updateOne('users', { username: users[0].username }, { challenges: user.challenges });
 
   res.json({ text: 'ok', code: 200 });
 });

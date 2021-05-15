@@ -36,13 +36,7 @@ const CreateActivity = () => {
         </FormGroup>
         <FormGroup>
           <ControlLabel>Сколько чего</ControlLabel>
-          <Slider
-            progress
-            defaultValue={50}
-            onChange={value => {
-              console.log(value);
-            }}
-          />
+          <Slider progress defaultValue={50} />
         </FormGroup>
         <FormGroup>
           <ControlLabel>Есть ли дата окончания</ControlLabel>

@@ -12,8 +12,6 @@ router.get('/', async function (req, res) {
 
   const user = await mongoUtils.findOne('users', { username });
 
-  console.log(user);
-
   const challenges = await mongoUtils.find('challenges', { _id: { $in: user.challenges.map(item => ObjectId(item)) } });
 
   res.json(challenges);
