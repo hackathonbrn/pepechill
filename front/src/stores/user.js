@@ -15,6 +15,8 @@ class UserStore {
     }
 
     this._user = res;
+
+    console.log(this._user);
   }
 
   get user() {

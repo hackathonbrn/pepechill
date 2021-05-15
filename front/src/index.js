@@ -1,11 +1,12 @@
+import { API_ROOT } from './constants';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import App from './app';
 
-import { API_ROOT } from './constants';
-
+console.log(axios.defaults.baseURL);
 axios.defaults.baseURL = API_ROOT;
+console.log(axios.defaults.baseURL);
 
 const accessToken = localStorage.getItem('access-token');
 

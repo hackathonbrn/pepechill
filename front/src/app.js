@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 
@@ -33,7 +34,11 @@ function PublicRoute({ component: Component, authed, ...rest }) {
   );
 }
 
-const App = () => {
+const App = observer(() => {
+  useEffect(() => {
+    store.getUser();
+  }, []);
+
   return (
     <Router>
       <div>
@@ -45,6 +50,6 @@ const App = () => {
       </div>
     </Router>
   );
-};
+});
 
 export default App;

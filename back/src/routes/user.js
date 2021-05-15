@@ -13,9 +13,11 @@ router.get('/', async function (req, res) {
     return;
   }
 
-  const username = getAccessToken(client, accessToken);
+  const username = await getAccessToken(client, accessToken);
 
   const user = await mongoUtils.findOne('users', { username });
 
-  res.json(user);
+  res.json({ username: user.username, name: user.name, challenges: user.challenges });
 });
+
+module.exports = router;

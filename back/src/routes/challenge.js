@@ -54,7 +54,7 @@ router.post('/', async function (req, res) {
     return;
   }
 
-  const challenge = await mongoUtils.insertOne('challenges', challenge);
+  await mongoUtils.insertOne('challenges', challenge);
 
   res.json({ text: 'ok', code: 200 });
 });
