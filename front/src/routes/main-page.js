@@ -24,6 +24,7 @@ class MainPage extends Component {
     super(props);
     this.state = {
       show: false,
+      formValue: {},
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
@@ -47,7 +48,13 @@ class MainPage extends Component {
             <Modal.Title>Создание своего челленджа</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form onSubmit={() => store.login(username, password)} fluid>
+            <Form
+              onChange={formValue => {
+                this.setState({ formValue });
+              }}
+              onSubmit={() => console.log(this.state.formValue)}
+              fluid
+            >
               <FormGroup>
                 <ControlLabel>Название</ControlLabel>
                 <FormControl name="challengeName" type="username" />
@@ -58,7 +65,7 @@ class MainPage extends Component {
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Сколько чего</ControlLabel>
-                <Slider style={{ width: '93%', margin: 'auto' }} progress defaultValue={50} />
+                <Slider name="target" style={{ width: '93%', margin: 'auto' }} progress defaultValue={50} />
               </FormGroup>
               <FormGroup>
                 <ButtonToolbar>
