@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const mongoUtils = require('../utils/mongo-utils');
-const client = require('../utils/redis-client');
-const getAccessTokenData = require('../utils/get-access-token');
 
 const { ObjectId } = require('mongodb');
 
