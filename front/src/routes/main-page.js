@@ -15,9 +15,11 @@ import {
 
 import ActivitiesList from '../components/activities-list';
 
-import { getStore } from '../stores/activities';
+import { getStore as getActivityStore } from '../stores/activities';
+import { getStore as getUserStore } from '../stores/user';
 
-const store = getStore();
+const activityStore = getActivityStore();
+const userStore = getUserStore();
 
 class MainPage extends Component {
   constructor(props) {
@@ -52,20 +54,28 @@ class MainPage extends Component {
               onChange={formValue => {
                 this.setState({ formValue });
               }}
-              onSubmit={() => console.log(this.state.formValue)}
+              onSubmit={() => activityStore.createActivity({ ...this.state.formValue, username: userStore.user.username })}
               fluid
             >
               <FormGroup>
                 <ControlLabel>Название</ControlLabel>
-                <FormControl name="challengeName" type="username" />
+                <FormControl name="caption" type="username" />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Описание</ControlLabel>
-                <FormControl rows={5} name="textarea" componentClass="textarea" />
+                <FormControl rows={5} name="text" componentClass="textarea" />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Сколько чего</ControlLabel>
-                <Slider name="target" style={{ width: '93%', margin: 'auto' }} progress defaultValue={50} />
+                <FormControl
+                  accepter={Slider}
+                  defaultValue={50}
+                  progress
+                  min={0}
+                  max={200}
+                  name="target"
+                  style={{ width: '93%', margin: 'auto' }}
+                />
               </FormGroup>
               <FormGroup>
                 <ButtonToolbar>
