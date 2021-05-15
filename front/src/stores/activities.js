@@ -1,24 +1,20 @@
 import { makeAutoObservable } from 'mobx';
 
-import * as api from '../api/user';
+import * as api from '../api/activities';
 
-class UserStore {
-  _user = undefined;
+class ActivitiesStore {
+  activities = undefined;
 
-  async getUser() {
+  async getActivities() {
     let res;
 
     try {
-      res = await api.getUser();
+      res = await api.getActivities();
     } catch (error) {
       return;
     }
 
-    this._user = res;
-  }
-
-  get user() {
-    return this._user;
+    this.activities = res;
   }
 
   constructor() {
@@ -29,7 +25,7 @@ class UserStore {
 let store;
 
 export function getStore() {
-  if (!store) store = new UserStore();
+  if (!store) store = new ActivitiesStore();
 
   return store;
 }
