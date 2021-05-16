@@ -15,6 +15,7 @@ import {
 import { runInAction } from 'mobx';
 
 import ActivitiesList from '../components/activities-list';
+import './main-page.css';
 
 import { getStore as getActivityStore } from '../stores/activities';
 import { getStore as getUserStore } from '../stores/user';
@@ -44,7 +45,7 @@ class MainPage extends Component {
         <Container>
           <ActivitiesList />
         </Container>
-        <IconButton onClick={this.open} size="lg" icon={<Icon icon="plus" />} circle />
+        <IconButton className="create-button" onClick={this.open} size="lg" icon={<Icon icon="plus" />} circle />
 
         <Modal show={this.state.show} onHide={this.close}>
           <Modal.Header>

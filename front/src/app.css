@@ -22,15 +22,8 @@
     font-size:1.5rem;
 }
 
-.App {
 
-  min-width: 600px!important;
-  min-height: 400px!important;
-  max-width: 600px!important;
-  max-height: 400px!important;
-  padding: 2px;
-  border-radius: 2px;
-}
+
 
 .footer{
   min-height: 100px;

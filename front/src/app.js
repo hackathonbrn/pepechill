@@ -60,7 +60,7 @@ const App = observer(() => {
             </Nav.Item>
           </Nav>
           <Nav pullRight>
-            <Nav.Item icon={<Icon icon="cog" />}>Settings</Nav.Item>
+            <Nav.Item icon={<Icon icon="cog" />}>Настройки</Nav.Item>
           </Nav>
         </Navbar.Body>
       </Navbar>
