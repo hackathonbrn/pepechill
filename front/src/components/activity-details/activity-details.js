@@ -47,18 +47,23 @@ const userStore = getUserStore();
 // ];
 
 const ModalAdd = () => {
+  const [show, setShow] = useState(true);
   const history = useHistory();
+
   return (
-    <Modal backdrop={true} show={true}>
+    <Modal backdrop={true} show={show}>
       <Modal.Body>
         <Modal.Title>Хотите присоедениться к цели?</Modal.Title>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          onClick={() => {
+          onClick={async () => {
             const activity = toJS(activityStore.activity);
 
-            activityStore.addUser({ id: activity._id });
+            await activityStore.addUser({ id: activity._id });
+            await activityStore.getActivity(activity._id);
+
+            setShow(false);
           }}
           appearance="primary"
         >
@@ -141,13 +146,15 @@ const ActivityDetails = observer(() => {
           <FlexboxGrid.Item colspan={4}>{userListProgress}</FlexboxGrid.Item>
         </FlexboxGrid>
         <Form
-          onSubmit={() => {
+          onSubmit={async () => {
             const idx = userList.findIndex(item => item.username === userStore.user.username);
             userList[idx].records.push({ value: progress, timestamp: Number(new Date()) });
             let data = { ...activityStore.activity, users: userList };
 
             console.log('list', userList);
-            activityStore.editActivity(data);
+            await activityStore.editActivity(data);
+            activityStore.getActivity(id);
+            setProgress('');
           }}
         >
           <FormGroup>
