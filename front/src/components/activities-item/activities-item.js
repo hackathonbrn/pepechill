@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Progress, Icon, FlexboxGrid } from 'rsuite';
+import { Panel, Progress, Icon, FlexboxGrid, Loader } from 'rsuite';
 
 import { getStore } from '../../stores/user';
 
@@ -15,10 +15,13 @@ const ActivitiesItem = props => {
 
   let percentage;
 
+  if (!userData) return <Loader />;
+
   if (!userData.records.length) {
     percentage = 0;
   } else {
-    percentage = userData.records[userData.records.length - 1].value / target;
+    console.log(typeof target);
+    percentage = target / Number(userData.records[userData.records.length - 1].value);
   }
 
   return (

@@ -83,4 +83,25 @@ router.put('/', async function (req, res) {
   res.json({ text: 'Updated', code: 200 });
 });
 
+router.post('/add', async function (req, res) {
+  const { id } = req.body;
+  const username = await getAccessTokenData(client, req.headers.authorization);
+
+  if (!id || !username) {
+    res.json({ text: 'Wrong parameters', code: 400 });
+    return;
+  }
+
+  const user = await mongoUtils.findOne('users', { username: username });
+  const challenge = await mongoUtils.findOne('challenges', { _id: ObjectId(id) });
+
+  user.challenges.push(String(id));
+  challenge.users.push({ username: username, records: [] });
+  await mongoUtils.updateOne('challenges', { _id: ObjectId(id) }, { users: challenge.users });
+  await mongoUtils.updateOne('users', { username: username }, { challenges: user.challenges });
+
+  res.status(200);
+  res.json({ text: 'Accepted', code: 200 });
+});
+
 module.exports = router;
