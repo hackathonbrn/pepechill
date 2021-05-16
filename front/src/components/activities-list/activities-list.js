@@ -24,6 +24,13 @@ const ActivitiesList = observer(() => {
 
   let arr = store.activities;
 
+  if (!arr || (arr && !arr.length))
+    return (
+      <div className="activities-list-empty">
+        <div>Целей не найдено, создайте новую!</div>
+      </div>
+    );
+
   return (
     <Row className="activities-list">
       {arr
