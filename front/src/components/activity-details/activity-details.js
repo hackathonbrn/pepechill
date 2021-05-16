@@ -14,8 +14,16 @@ import {
   Button,
   IconButton,
 } from 'rsuite';
+import { runInAction } from 'mobx';
+
+import { useHistory, useParams } from 'react-router-dom';
 
 import './activity-details.css';
+import { getStore as getActivityStore } from '../../stores/activities';
+import { getStore as getUserStore } from '../../stores/user';
+
+const activityStore = getActivityStore();
+const userStore = getUserStore();
 
 const userList = [
   {
@@ -34,11 +42,40 @@ const userList = [
   },
 ];
 
-const ActivityDetails = ({ caption, text, target }) => {
+const ActivityDetails = () => {
   const { Circle } = Progress;
   // let userList = toJS(users);
   // console.log(users);
   console.log(userList);
+
+  const history = useHistory();
+  const params = useParams();
+
+  console.log(params);
+
+  const id = params.id;
+
+  if (!id) {
+    console.log('replace');
+    history.replace('/');
+  }
+
+  runInAction(async () => {
+    await activityStore.getActivity(id);
+  });
+
+  runInAction(async () => {
+    // await userStore.getUser();
+  });
+
+  // render={({ match }) => {
+  //           const { id } = match.params;
+  //           runInAction(async () => {
+  //             await activityStore.getActivity(id);
+  //           });
+
+  //           return activityStore.loading ? <Loader center size="lg" /> : <ActivityDetails {...activityStore.activity} />;
+  //         }
 
   const userListProgress = userList.map(el => {
     const speaker = (
@@ -66,11 +103,11 @@ const ActivityDetails = ({ caption, text, target }) => {
   });
 
   return (
-    <Panel bordered header={caption} className="activity_details">
+    <Panel bordered header={'caption'} className="activity_details">
       <IconButton color="red" className="delete-button" size="lg" icon={<Icon icon="trash-o" />} circle />
       <FlexboxGrid justify="space-between">
         <FlexboxGrid.Item colspan={6}>
-          <p>{text}</p>
+          <p>{'text'}</p>
           <Icon icon="peoples" />
           <span>{userList.length}</span>
         </FlexboxGrid.Item>

@@ -20,7 +20,11 @@ const userStore = getUserStore();
 const authStore = getAuthStore();
 const activityStore = getActivitiesStore();
 
+let lastPlace = '/';
+
 function PrivateRoute({ component: Component, authed, ...rest }) {
+  lastPlace = rest.location.pathname;
+
   return (
     <Route
       {...rest}
@@ -36,7 +40,7 @@ function PublicRoute({ component: Component, authed, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        authed === false ? <Component {...props} /> : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+        authed === false ? <Component {...props} /> : <Redirect to={{ pathname: lastPlace, state: { from: props.location } }} />
       }
     />
   );
@@ -70,21 +74,9 @@ const App = observer(() => {
       </Navbar>
       <Switch>
         <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
-        <Route
-          authed={Boolean(userStore.user)}
-          path="/activities/:id?"
-          render={({ match }) => {
-            const { id } = match.params;
-            runInAction(async () => {
-              await activityStore.getActivity(id);
-              console.log({ ...activityStore.activity });
-            });
-
-            return activityStore.loading ? <Loader center size="lg" /> : <ActivityDetails {...activityStore.activity} />;
-          }}
-        />
-        <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
-        <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
+        <PrivateRoute authed={Boolean(userStore.user)} path="/activities/:id" component={ActivityDetails} />
+        <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} exact />
+        <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} exact />
       </Switch>
     </Router>
   );
