@@ -81,7 +81,7 @@ class MainPage extends Component {
                   min={0}
                   max={200}
                   name="target"
-                  style={{ width: '93%', margin: 'auto' }}
+                  style={{ width: '92%', margin: 'auto' }}
                 />
               </FormGroup>
               <FormGroup>

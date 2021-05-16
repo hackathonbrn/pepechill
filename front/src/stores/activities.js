@@ -79,6 +79,14 @@ class ActivitiesStore {
     }
   }
 
+  async editActivity(data) {
+    try {
+      await api.editActivity(data);
+    } catch (error) {
+      return;
+    }
+  }
+
   constructor() {
     makeAutoObservable(this, { _loading: false });
   }

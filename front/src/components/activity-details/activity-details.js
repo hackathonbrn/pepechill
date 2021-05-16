@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
 import {
@@ -47,6 +47,8 @@ const userStore = getUserStore();
 const ActivityDetails = observer(() => {
   const history = useHistory();
   const params = useParams();
+
+  const [progress, setProgress] = useState('');
 
   const id = params.id;
   useEffect(() => {
@@ -97,9 +99,10 @@ const ActivityDetails = observer(() => {
   return (
     <Panel bordered header={caption} className="activity_details">
       <IconButton
-        onClick={() => {
-          activityStore.deleteActivity(id);
-          // history.push('/');
+        onClick={async () => {
+          await activityStore.deleteActivity({ id });
+          activityStore.getActivities();
+          history.push('/');
         }}
         color="red"
         className="delete-button"
@@ -115,10 +118,19 @@ const ActivityDetails = observer(() => {
         </FlexboxGrid.Item>
         <FlexboxGrid.Item colspan={6}>{userListProgress}</FlexboxGrid.Item>
       </FlexboxGrid>
-      <Form>
+      <Form
+        onSubmit={() => {
+          const idx = userList.findIndex(item => item.username === userStore.user.username);
+          userList[idx].records.push({ value: progress, timestamp: Number(new Date()) });
+          let data = { ...activityStore.activity, users: userList };
+
+          console.log('list', userList);
+          activityStore.editActivity(data);
+        }}
+      >
         <FormGroup>
           <ControlLabel>Ваш прогресс</ControlLabel>
-          <FormControl type="number" name="progress" />
+          <FormControl onChange={e => setProgress(e)} value={progress} type="number" name="progress" />
         </FormGroup>
         <FormGroup>
           <Button type="submit" appearance="primary">

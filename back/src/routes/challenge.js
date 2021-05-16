@@ -68,7 +68,7 @@ router.post('/', async function (req, res) {
 router.put('/', async function (req, res) {
   const { _id, caption, text, target, users } = req.body;
 
-  if (!caption || !text || !target || !users || !id) {
+  if (!caption || !text || !target || !users || !_id) {
     res.json({ text: 'Wrong parameters', code: 400 });
     return;
   }

@@ -21,9 +21,14 @@ export async function createActivity(data) {
 }
 
 export async function deleteActivity(data) {
-  console.log('del1', data);
-
   const res = await axios.post('/api/challenge/delete', data);
-  console.log('RESULT', res);
+
+  return res.data;
+}
+
+export async function editActivity(data) {
+  console.log(data);
+  const res = await axios.put('/api/challenge', data);
+
   return res.data;
 }
