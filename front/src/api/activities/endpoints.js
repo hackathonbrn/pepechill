@@ -19,3 +19,11 @@ export async function createActivity(data) {
 
   return res.data;
 }
+
+export async function deleteActivity(data) {
+  console.log('del1', data);
+
+  const res = await axios.post('/api/challenge/delete', data);
+  console.log('RESULT', res);
+  return res.data;
+}

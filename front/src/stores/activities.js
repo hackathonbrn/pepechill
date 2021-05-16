@@ -53,6 +53,18 @@ class ActivitiesStore {
     // this._loading = false;
   }
 
+  async deleteActivity(id) {
+    console.log('del', id);
+    let res;
+    try {
+      res = await api.deleteActivity(id);
+    } catch (error) {
+      return;
+    }
+
+    console.log('del2', res);
+  }
+
   async createActivity(data) {
     try {
       await api.createActivity(data);

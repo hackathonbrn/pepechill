@@ -96,7 +96,17 @@ const ActivityDetails = observer(() => {
 
   return (
     <Panel bordered header={caption} className="activity_details">
-      <IconButton color="red" className="delete-button" size="lg" icon={<Icon icon="trash-o" />} circle />
+      <IconButton
+        onClick={() => {
+          activityStore.deleteActivity(id);
+          // history.push('/');
+        }}
+        color="red"
+        className="delete-button"
+        size="lg"
+        icon={<Icon icon="trash-o" />}
+        circle
+      />
       <FlexboxGrid justify="space-between">
         <FlexboxGrid.Item colspan={6}>
           <p>{text}</p>
