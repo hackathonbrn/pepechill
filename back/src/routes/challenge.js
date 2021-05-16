@@ -21,7 +21,7 @@ router.get('/', async function (req, res) {
   res.json(challenge);
 });
 
-router.delete('/', async function (req, res) {
+router.post('/delete', async function (req, res) {
   const { id } = req.body;
 
   if (!id) {
