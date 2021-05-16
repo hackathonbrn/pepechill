@@ -1,0 +1,13 @@
+.people-progress {
+  width: 150px;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.people-progress:hover {
+  cursor: pointer;
+  border-radius: 15px;
+}
