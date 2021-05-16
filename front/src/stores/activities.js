@@ -87,6 +87,14 @@ class ActivitiesStore {
     }
   }
 
+  async addUser(data) {
+    try {
+      await api.addUser(data);
+    } catch (error) {
+      return;
+    }
+  }
+
   constructor() {
     makeAutoObservable(this, { _loading: false });
   }

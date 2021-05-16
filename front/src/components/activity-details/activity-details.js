@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
 import {
+  Modal,
   Panel,
   Progress,
   Icon,
@@ -15,6 +16,7 @@ import {
   Button,
   IconButton,
   Loader,
+  ButtonToolbar,
 } from 'rsuite';
 import { runInAction } from 'mobx';
 
@@ -43,6 +45,32 @@ const userStore = getUserStore();
 //     ],
 //   },
 // ];
+
+const ModalAdd = () => {
+  const history = useHistory();
+  return (
+    <Modal backdrop={true} show={true}>
+      <Modal.Body>
+        <Modal.Title>Хотите присоедениться к цели?</Modal.Title>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          onClick={() => {
+            const activity = toJS(activityStore.activity);
+
+            activityStore.addUser({ _id: activity._id });
+          }}
+          appearance="primary"
+        >
+          Ok
+        </Button>
+        <Button onClick={() => history.push('/')} appearance="subtle">
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const ActivityDetails = observer(() => {
   const history = useHistory();
@@ -96,49 +124,56 @@ const ActivityDetails = observer(() => {
     );
   });
 
-  return (
-    <Panel bordered header={caption} className="activity_details">
-      <IconButton
-        onClick={async () => {
-          await activityStore.deleteActivity({ id });
-          activityStore.getActivities();
-          history.push('/');
-        }}
-        color="red"
-        className="delete-button"
-        size="lg"
-        icon={<Icon icon="trash-o" />}
-        circle
-      />
-      <FlexboxGrid justify="space-between">
-        <FlexboxGrid.Item colspan={6}>
-          <p>{text}</p>
-          <Icon icon="peoples" />
-          <span>{userList.length}</span>
-        </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={6}>{userListProgress}</FlexboxGrid.Item>
-      </FlexboxGrid>
-      <Form
-        onSubmit={() => {
-          const idx = userList.findIndex(item => item.username === userStore.user.username);
-          userList[idx].records.push({ value: progress, timestamp: Number(new Date()) });
-          let data = { ...activityStore.activity, users: userList };
+  const idx = userList.findIndex(item => item.username === userStore.user.username);
 
-          console.log('list', userList);
-          activityStore.editActivity(data);
-        }}
-      >
-        <FormGroup>
-          <ControlLabel>Ваш прогресс</ControlLabel>
-          <FormControl onChange={e => setProgress(e)} value={progress} type="number" name="progress" />
-        </FormGroup>
-        <FormGroup>
-          <Button type="submit" appearance="primary">
-            Записать прогресс
-          </Button>
-        </FormGroup>
-      </Form>
-    </Panel>
+  const modal = idx === -1 ? <ModalAdd /> : null;
+
+  return (
+    <div>
+      {modal}
+      {/* <Icon icon="peoples" />
+          <span>{userList.length}</span> */}
+      <Panel bordered header={<h3>{caption}</h3>} className="activity_details">
+        <FlexboxGrid justify="space-between">
+          <FlexboxGrid.Item colspan={8}>
+            <p style={{ fontSize: '24px' }}>{text}</p>
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={4}>{userListProgress}</FlexboxGrid.Item>
+        </FlexboxGrid>
+        <Form
+          onSubmit={() => {
+            const idx = userList.findIndex(item => item.username === userStore.user.username);
+            userList[idx].records.push({ value: progress, timestamp: Number(new Date()) });
+            let data = { ...activityStore.activity, users: userList };
+
+            console.log('list', userList);
+            activityStore.editActivity(data);
+          }}
+        >
+          <FormGroup>
+            <ControlLabel>Ваш прогресс</ControlLabel>
+            <FormControl onChange={e => setProgress(e)} value={progress} type="number" name="progress" />
+          </FormGroup>
+          <FormGroup>
+            <ButtonToolbar>
+              <Button type="submit" appearance="primary">
+                Записать прогресс
+              </Button>
+              <IconButton
+                onClick={async () => {
+                  await activityStore.deleteActivity({ id });
+                  activityStore.getActivities();
+                  history.push('/');
+                }}
+                color="red"
+                className="delete-button"
+                icon={<Icon icon="trash-o" />}
+              />
+            </ButtonToolbar>
+          </FormGroup>
+        </Form>
+      </Panel>
+    </div>
   );
 });
 
