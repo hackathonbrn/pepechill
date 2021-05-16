@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction } from 'mobx';
 import { Loader, Navbar, Nav, Icon } from 'rsuite';
 
 import 'rsuite/dist/styles/rsuite-default.css';
+import './app.css';
 
 import LoginPage from './routes/login-page';
 import RegisterPage from './routes/register-page';
@@ -49,41 +50,39 @@ const App = observer(() => {
   if (userStore.loading || activityStore.loading || authStore.loading) return <Loader center size="lg" />;
 
   return (
-    <div>
+    <Router>
       <Navbar appearance="inverse">
-        <Navbar.Header>PEPECHILL</Navbar.Header>
+        <Navbar.Header className="navbar-brand logo">PEPECHILL</Navbar.Header>
         <Navbar.Body>
           <Nav>
-            <Nav.Item icon={<Icon icon="home" />}>Home</Nav.Item>
-            <Nav.Item>News</Nav.Item>
-            <Nav.Item>Products</Nav.Item>
+            <Nav.Item componentClass="span">
+              <Link to="/">Цели</Link>
+            </Nav.Item>
           </Nav>
           <Nav pullRight>
             <Nav.Item icon={<Icon icon="cog" />}>Settings</Nav.Item>
           </Nav>
         </Navbar.Body>
       </Navbar>
-      <Router>
-        <Switch>
-          <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
-          <Route
-            authed={Boolean(userStore.user)}
-            path="/activities/:id?"
-            render={({ match }) => {
-              const { id } = match.params;
-              runInAction(async () => {
-                await activityStore.getActivity(id);
-                console.log({ ...activityStore.activity });
-              });
+      <Switch>
+        <PrivateRoute authed={Boolean(userStore.user)} path="/" component={MainPage} exact />
+        <Route
+          authed={Boolean(userStore.user)}
+          path="/activities/:id?"
+          render={({ match }) => {
+            const { id } = match.params;
+            runInAction(async () => {
+              await activityStore.getActivity(id);
+              console.log({ ...activityStore.activity });
+            });
 
-              return activityStore.loading ? <Loader center size="lg" /> : <ActivityDetails {...activityStore.activity} />;
-            }}
-          />
-          <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
-          <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
-        </Switch>
-      </Router>
-    </div>
+            return activityStore.loading ? <Loader center size="lg" /> : <ActivityDetails {...activityStore.activity} />;
+          }}
+        />
+        <PublicRoute authed={Boolean(userStore.user)} path="/register" component={RegisterPage} />
+        <PublicRoute authed={Boolean(userStore.user)} path="/login" component={LoginPage} />
+      </Switch>
+    </Router>
   );
 });
 

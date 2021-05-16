@@ -21,3 +21,63 @@
     font-weight:bold;
     font-size:1.5rem;
 }
+
+.App {
+
+  min-width: 600px!important;
+  min-height: 400px!important;
+  max-width: 600px!important;
+  max-height: 400px!important;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+.footer{
+  min-height: 100px;
+}
+
+.footer-button{
+  margin: 10px 10px 0 0;
+}
+
+.navbar-brand {
+    padding: 18px 20px;
+    display: inline-block;
+    color:white;
+  }
+
+.navbar-nav span[role=button] {
+  padding: 15px;
+  display: inline-block;
+  line-height: 20px;
+
+}
+
+.footer-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+.footer-item:hover{
+  background: #3C3F43;
+}
+
+.footer-item-text{
+  margin: 0 0 0 5px;
+  font-size: 1rem;
+  color: #34C3FF;
+}
+
+.footer-item-text-disabled{
+  margin: 0 0 0 5px;
+  font-size: 1rem;
+  color: grey;
+}
+
+a {
+  color: white !important;
+  text-decoration: none
+}

@@ -27,7 +27,7 @@ const ActivitiesItem = props => {
           <span>{users.length}</span>
         </FlexboxGrid.Item>
       </FlexboxGrid>
-      <Line percent={[target]} status="active" />
+      <Line percent={target} />
     </Panel>
   );
 };
