@@ -35,7 +35,7 @@ export async function editActivity(data) {
 
 export async function addUser(data) {
   console.log(data);
-  const res = await axios.put('/api/challenge/add', data);
+  const res = await axios.post('/api/challenge/add', data);
 
   return res.data;
 }

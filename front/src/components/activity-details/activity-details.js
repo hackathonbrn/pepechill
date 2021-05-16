@@ -58,7 +58,7 @@ const ModalAdd = () => {
           onClick={() => {
             const activity = toJS(activityStore.activity);
 
-            activityStore.addUser({ _id: activity._id });
+            activityStore.addUser({ id: activity._id });
           }}
           appearance="primary"
         >
