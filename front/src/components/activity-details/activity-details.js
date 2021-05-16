@@ -40,6 +40,31 @@ const ActivityDetails = ({ caption, text, target }) => {
   // console.log(users);
   console.log(userList);
 
+  const userListProgress = userList.map(el => {
+    const speaker = (
+      <Popover title="Прогресс">
+        <div
+          style={{
+            width: 120,
+            display: 'inline-block',
+            marginRight: 10,
+          }}
+        >
+          <Circle percent={el.records[el.records.length - 1].value} strokeColor="#ffc107" />
+        </div>
+      </Popover>
+    );
+
+    return (
+      <Whisper key={el.username} placement="left" trigger="hover" speaker={speaker}>
+        <div className="people-progress">
+          <Icon size="lg" icon="avatar" />
+          <span style={{ fontSize: '25px' }}>{el.username}</span>
+        </div>
+      </Whisper>
+    );
+  });
+
   return (
     <Panel bordered header={caption} className="activity_details">
       <IconButton color="red" className="delete-button" size="lg" icon={<Icon icon="trash-o" />} circle />
@@ -49,35 +74,7 @@ const ActivityDetails = ({ caption, text, target }) => {
           <Icon icon="peoples" />
           <span>{userList.length}</span>
         </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={6}>
-          {userList.map(el => {
-            return (
-              <Whisper
-                key={el.username}
-                placement="left"
-                trigger="hover"
-                speaker={
-                  <Popover title="Прогресс">
-                    <div
-                      style={{
-                        width: 120,
-                        display: 'inline-block',
-                        marginRight: 10,
-                      }}
-                    >
-                      <Circle percent={el.records[el.records.length - 1].value} strokeColor="#ffc107" />
-                    </div>
-                  </Popover>
-                }
-              >
-                <div className="people-progress">
-                  <Icon size="lg" icon="avatar" />
-                  <span style={{ fontSize: '25px' }}>{el.username}</span>
-                </div>
-              </Whisper>
-            );
-          })}
-        </FlexboxGrid.Item>
+        <FlexboxGrid.Item colspan={6}>{userListProgress}</FlexboxGrid.Item>
       </FlexboxGrid>
       <Form>
         <FormGroup>
