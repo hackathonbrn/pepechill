@@ -39,7 +39,7 @@ app.use('/api/register', registerRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/refresh', refreshTokenRouter);
 app.use('/api/challenges', auth, challengesRouter);
-app.use('/api/challenge', auth, challengeRouter);
+app.use('/api/challenge/', auth, challengeRouter);
 app.use('/api/user', auth, userRouter);
 
 // catch 404 and forward to error handler
