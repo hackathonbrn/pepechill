@@ -66,16 +66,16 @@ router.post('/', async function (req, res) {
 });
 
 router.put('/', async function (req, res) {
-  const { id, caption, text, target, users } = req.body;
+  const { _id, caption, text, target, users } = req.body;
 
   if (!caption || !text || !target || !users || !id) {
     res.json({ text: 'Wrong parameters', code: 400 });
     return;
   }
 
-  const challenge = { id, caption, text, target, users };
+  const challenge = { _id, caption, text, target, users };
 
-  const updatedChallenge = await mongoUtils.updateOne('challenges', { _id: id }, { challenge: challenge });
+  const updatedChallenge = await mongoUtils.updateOne('challenges', { _id: _id }, { challenge: challenge });
 
   res.json(updatedChallenge);
 });

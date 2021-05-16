@@ -23,9 +23,4 @@ const refreshAuthLogic = async failedRequest => {
 
 createAuthRefreshInterceptor(axios, refreshAuthLogic);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'));

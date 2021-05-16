@@ -13,6 +13,14 @@ const ActivitiesItem = props => {
 
   const userData = users.find(item => item.username === store.user.username);
 
+  let percentage;
+
+  if (!userData.records.length) {
+    percentage = 0;
+  } else {
+    percentage = userData.records[userData.records.length - 1].value / target;
+  }
+
   return (
     <Panel bordered header={caption} className="activities_item">
       <FlexboxGrid justify="space-between">
@@ -24,7 +32,7 @@ const ActivitiesItem = props => {
           <span>{users.length}</span>
         </FlexboxGrid.Item>
       </FlexboxGrid>
-      <Line percent={target} />
+      <Line percent={percentage} />
     </Panel>
   );
 };
