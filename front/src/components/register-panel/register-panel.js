@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Panel, Form, FormGroup, FormControl, Button, ControlLabel, Schema } from 'rsuite';
+import { useHistory } from 'react-router-dom';
 
 import { passwordValidate, usernameValidate } from '../../utils/validators';
 
@@ -36,6 +37,8 @@ const RegisterPanel = observer(() => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
+  const history = useHistory();
+
   return (
     <Panel header={<h3>Регистрация</h3>} bordered>
       <Form model={model} onSubmit={() => store.register(username, name, password)} fluid>
@@ -45,6 +48,9 @@ const RegisterPanel = observer(() => {
         <FormGroup>
           <Button appearance="primary" type="submit">
             Зарегистрироваться
+          </Button>
+          <Button appearance="link" onClick={() => history.push('/login')}>
+            Войти
           </Button>
         </FormGroup>
       </Form>

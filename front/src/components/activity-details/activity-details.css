@@ -1,0 +1,12 @@
+.people-progress {
+  width: 150px;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 5px;
+
+}
+
+.people-progress:hover {
+  cursor: pointer;
+  color: #3498ff;
+}

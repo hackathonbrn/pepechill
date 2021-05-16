@@ -3,22 +3,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import App from './app';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
-console.log(axios.defaults.baseURL);
+import { getStore } from './stores/auth';
+
+const store = getStore();
+
 axios.defaults.baseURL = API_ROOT;
-console.log(axios.defaults.baseURL);
 
 const accessToken = localStorage.getItem('access-token');
 
 if (accessToken) axios.defaults.headers.common['Authorization'] = accessToken;
 
-// const refreshAuthLogic = async (failedRequest ) => {
-//   const tokens = await
-// }
+const refreshAuthLogic = async failedRequest => {
+  const tokens = store.refresh(failedRequest);
+  console.log('test');
+  failedRequest.response.config.headers['Authorization'] = tokens.accessToken;
+};
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+createAuthRefreshInterceptor(axios, refreshAuthLogic);
+
+ReactDOM.render(<App />, document.getElementById('root'));

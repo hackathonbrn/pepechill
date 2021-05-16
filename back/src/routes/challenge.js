@@ -21,7 +21,7 @@ router.get('/', async function (req, res) {
   res.json(challenge);
 });
 
-router.delete('/', async function (req, res) {
+router.post('/delete', async function (req, res) {
   const { id } = req.body;
 
   if (!id) {
@@ -47,16 +47,61 @@ router.delete('/', async function (req, res) {
 });
 
 router.post('/', async function (req, res) {
-  const { challenge } = req.body;
+  const { caption, text, target, users } = req.body;
 
-  if (!challenge) {
+  if (!caption || !text || !target || !users) {
     res.json({ text: 'Wrong parameters', code: 400 });
     return;
   }
 
-  await mongoUtils.insertOne('challenges', challenge);
+  await mongoUtils.insertOne('challenges', { caption, target, text, users });
+  const m = await mongoUtils.findOne('challenges', { caption: caption, target: target, text: text });
+  const user = await mongoUtils.findOne('users', { username: users[0].username });
+
+  user.challenges.push(String(m._id));
+
+  await mongoUtils.updateOne('users', { username: users[0].username }, { challenges: user.challenges });
 
   res.json({ text: 'ok', code: 200 });
+});
+
+router.put('/', async function (req, res) {
+  const { _id, caption, text, target, users } = req.body;
+
+  if (!caption || !text || !target || !users || !_id) {
+    res.json({ text: 'Wrong parameters', code: 400 });
+    return;
+  }
+
+  const updatedChallenge = await mongoUtils.updateOne(
+    'challenges',
+    { _id: ObjectId(_id) },
+    { caption: caption, text: text, target: target, users: users }
+  );
+  console.log(updatedChallenge);
+  res.status(200);
+  res.json({ text: 'Updated', code: 200 });
+});
+
+router.post('/add', async function (req, res) {
+  const { id } = req.body;
+  const username = await getAccessTokenData(client, req.headers.authorization);
+
+  if (!id || !username) {
+    res.json({ text: 'Wrong parameters', code: 400 });
+    return;
+  }
+
+  const user = await mongoUtils.findOne('users', { username: username });
+  const challenge = await mongoUtils.findOne('challenges', { _id: ObjectId(id) });
+
+  user.challenges.push(String(id));
+  challenge.users.push({ username: username, records: [] });
+  await mongoUtils.updateOne('challenges', { _id: ObjectId(id) }, { users: challenge.users });
+  await mongoUtils.updateOne('users', { username: username }, { challenges: user.challenges });
+
+  res.status(200);
+  res.json({ text: 'Accepted', code: 200 });
 });
 
 module.exports = router;

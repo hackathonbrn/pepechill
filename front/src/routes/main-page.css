@@ -1,0 +1,10 @@
+.create-button{
+  position: absolute;
+  bottom: 0px;
+  margin: 10px 0px !important;
+
+  z-index: 5;
+  left:50%;
+  transform: translateX(-50%);
+box-shadow: 1px 2px 2px 0px rgba(0,0,0,0.35);
+}
