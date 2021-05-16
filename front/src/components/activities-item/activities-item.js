@@ -9,7 +9,7 @@ const store = getStore();
 
 const ActivitiesItem = props => {
   const { Line } = Progress;
-  const { caption, text, target, users } = props;
+  const { caption, text, users } = props;
 
   const userData = users.find(item => item.username === store.user.username);
 
@@ -20,8 +20,7 @@ const ActivitiesItem = props => {
   if (!userData.records.length) {
     percentage = 0;
   } else {
-    console.log(typeof target);
-    percentage = target / Number(userData.records[userData.records.length - 1].value);
+    percentage = Number(userData.records[userData.records.length - 1].value);
   }
 
   return (
