@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/register', registerRouter);
 app.use('/api/login', loginRouter);
-app.use('/api/update_tokens', refreshTokenRouter);
+app.use('/api/refresh', refreshTokenRouter);
 app.use('/api/challenges', auth, challengesRouter);
 app.use('/api/challenge', auth, challengeRouter);
 app.use('/api/user', auth, userRouter);

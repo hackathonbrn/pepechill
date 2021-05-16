@@ -20,6 +20,8 @@ class UserStore {
 
   async getUser() {
     let res;
+
+    if (!localStorage.getItem('access-token')) return;
     this._loading = true;
 
     try {
@@ -31,6 +33,13 @@ class UserStore {
 
     this._user = res;
     this._loading = false;
+  }
+
+  logout() {
+    this.user = undefined;
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('refresh-token');
+    localStorage.removeItem('username');
   }
 }
 
