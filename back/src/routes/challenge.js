@@ -73,11 +73,14 @@ router.put('/', async function (req, res) {
     return;
   }
 
-  const challenge = { _id, caption, text, target, users };
-
-  const updatedChallenge = await mongoUtils.updateOne('challenges', { _id: _id }, { challenge: challenge });
-
-  res.json(updatedChallenge);
+  const updatedChallenge = await mongoUtils.updateOne(
+    'challenges',
+    { _id: ObjectId(_id) },
+    { caption: caption, text: text, target: target, users: users }
+  );
+  console.log(updatedChallenge);
+  res.status(200);
+  res.json({ text: 'Updated', code: 200 });
 });
 
 module.exports = router;
