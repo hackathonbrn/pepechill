@@ -153,6 +153,7 @@ const ActivityDetails = observer(() => {
 
             console.log('list', userList);
             await activityStore.editActivity(data);
+            await activityStore.getActivities();
             activityStore.getActivity(id);
             setProgress('');
           }}
