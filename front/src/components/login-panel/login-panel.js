@@ -38,7 +38,7 @@ const LoginPanel = observer(() => {
               Войти
             </Button>
             <Button appearance="link" onClick={() => history.push('/register')}>
-              Забыли пароль?
+              Зарегестрироваться
             </Button>
           </ButtonToolbar>
         </FormGroup>

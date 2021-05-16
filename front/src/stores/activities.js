@@ -21,7 +21,7 @@ class ActivitiesStore {
 
   async getActivities() {
     let res;
-
+    console.log('works');
     this._loading = true;
 
     try {

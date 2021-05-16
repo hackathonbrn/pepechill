@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import axios from 'axios';
 
 import * as api from '../api/user';
 
@@ -36,10 +37,11 @@ class UserStore {
   }
 
   logout() {
-    this.user = undefined;
+    this._user = undefined;
     localStorage.removeItem('access-token');
     localStorage.removeItem('refresh-token');
     localStorage.removeItem('username');
+    axios.defaults.headers.common['Authorization'] = '';
   }
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction } from 'mobx';
-import { Loader, Navbar, Nav, Icon } from 'rsuite';
+import { Loader, Navbar, Nav, Icon, Dropdown } from 'rsuite';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 import './app.css';
@@ -55,12 +55,16 @@ const App = observer(() => {
         <Navbar.Header className="navbar-brand logo">PEPECHILL</Navbar.Header>
         <Navbar.Body>
           <Nav>
-            <Nav.Item componentClass="span">
+            <Nav.Item componentClass="span" className={authStore.authenticated ? 'menu-links' : 'invisible'}>
               <Link to="/">Цели</Link>
             </Nav.Item>
           </Nav>
           <Nav pullRight>
-            <Nav.Item icon={<Icon icon="cog" />}>Настройки</Nav.Item>
+            <Dropdown title="Меню" trigger="click" className={authStore.authenticated ? '' : 'invisible'}>
+              <Dropdown.Item className="dropdown" onSelect={() => userStore.logout()}>
+                Выйти
+              </Dropdown.Item>
+            </Dropdown>
           </Nav>
         </Navbar.Body>
       </Navbar>

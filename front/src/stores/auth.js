@@ -4,8 +4,10 @@ import axios from 'axios';
 import * as api from '../api/auth';
 
 import { getStore as getUserStore } from './user';
+import { getStore as getActivitiesStore } from './activities';
 
 const userStore = getUserStore();
+const activitiesStore = getActivitiesStore();
 
 class AuthStore {
   _loading = false;
@@ -13,6 +15,10 @@ class AuthStore {
 
   get loading() {
     return this._loading;
+  }
+
+  get authenticated() {
+    return Boolean(userStore.user);
   }
 
   async register(username, name, password) {
@@ -52,6 +58,7 @@ class AuthStore {
     axios.defaults.headers.common['Authorization'] = res.accessToken;
 
     await userStore.getUser();
+    await activitiesStore.getActivities();
 
     this._loading = false;
   }

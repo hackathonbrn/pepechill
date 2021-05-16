@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Row, Col } from 'rsuite';
@@ -20,6 +20,8 @@ const store = getStore();
 const ActivitiesList = observer(() => {
   if (!store.activities) runInAction(() => store.getActivities());
 
+  const history = useHistory();
+
   let arr = store.activities;
 
   return (
@@ -27,7 +29,7 @@ const ActivitiesList = observer(() => {
       {arr
         ? arr.map(el => {
             return (
-              <Col key={el._id} lg={6} md={12} sm={24}>
+              <Col onClick={() => history.push(`/activities/${el._id}`)} key={el._id} lg={6} md={12} sm={24}>
                 <ActivitiesItem {...el} />
               </Col>
             );

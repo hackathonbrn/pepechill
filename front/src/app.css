@@ -70,7 +70,16 @@
   color: grey;
 }
 
-a {
+.menu-links a {
   color: white !important;
   text-decoration: none
+}
+
+a .dropdown{
+  color: black !important;
+  text-decoration: none
+}
+
+.invisible{
+  display: none;
 }
