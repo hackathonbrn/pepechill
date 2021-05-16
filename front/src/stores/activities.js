@@ -39,18 +39,18 @@ class ActivitiesStore {
   async getActivity(id) {
     let res;
 
-    this._loading = true;
+    // this._loading = true;
 
     try {
       res = await api.getActivity(id);
     } catch (error) {
-      this._loading = false;
+      // this._loading = false;
 
       return;
     }
 
     this._activity = res;
-    this._loading = false;
+    // this._loading = false;
   }
 
   async createActivity(data) {

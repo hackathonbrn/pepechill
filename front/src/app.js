@@ -59,9 +59,11 @@ const App = observer(() => {
         <Navbar.Header className="navbar-brand logo">PEPECHILL</Navbar.Header>
         <Navbar.Body>
           <Nav>
-            <Nav.Item componentClass="span" className={authStore.authenticated ? 'menu-links' : 'invisible'}>
-              <Link to="/">Цели</Link>
-            </Nav.Item>
+            <Link to="/">
+              <Nav.Item componentClass="span" className={authStore.authenticated ? 'menu-links' : 'invisible'}>
+                Цели
+              </Nav.Item>
+            </Link>
           </Nav>
           <Nav pullRight>
             <Dropdown title="Меню" trigger="click" className={authStore.authenticated ? '' : 'invisible'}>

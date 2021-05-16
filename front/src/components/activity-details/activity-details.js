@@ -1,5 +1,6 @@
-import React from 'react';
-// import { toJS } from 'mobx';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import { toJS } from 'mobx';
 import {
   Panel,
   Progress,
@@ -13,6 +14,7 @@ import {
   Form,
   Button,
   IconButton,
+  Loader,
 } from 'rsuite';
 import { runInAction } from 'mobx';
 
@@ -25,59 +27,49 @@ import { getStore as getUserStore } from '../../stores/user';
 const activityStore = getActivityStore();
 const userStore = getUserStore();
 
-const userList = [
-  {
-    username: 'andrey',
-    records: [
-      { value: 18, timestamp: 452345 },
-      { value: 20, timestamp: 3245224 },
-    ],
-  },
-  {
-    username: 'daniil',
-    records: [
-      { value: 12, timestamp: 452345 },
-      { value: 85, timestamp: 3245224 },
-    ],
-  },
-];
+// const userList = [
+//   {
+//     username: 'andrey',
+//     records: [
+//       { value: 18, timestamp: 452345 },
+//       { value: 20, timestamp: 3245224 },
+//     ],
+//   },
+//   {
+//     username: 'daniil',
+//     records: [
+//       { value: 12, timestamp: 452345 },
+//       { value: 85, timestamp: 3245224 },
+//     ],
+//   },
+// ];
 
-const ActivityDetails = () => {
-  const { Circle } = Progress;
-  // let userList = toJS(users);
-  // console.log(users);
-  console.log(userList);
-
+const ActivityDetails = observer(() => {
   const history = useHistory();
   const params = useParams();
 
-  console.log(params);
-
   const id = params.id;
+  useEffect(() => {
+    activityStore.getActivity(id);
+  }, [id]);
+
+  const { Circle } = Progress;
 
   if (!id) {
     console.log('replace');
     history.replace('/');
   }
 
-  runInAction(async () => {
-    await activityStore.getActivity(id);
-  });
+  if (!activityStore.activity) return <Loader center size="lg" />;
 
-  runInAction(async () => {
-    // await userStore.getUser();
-  });
+  const { caption, text, users } = activityStore.activity;
 
-  // render={({ match }) => {
-  //           const { id } = match.params;
-  //           runInAction(async () => {
-  //             await activityStore.getActivity(id);
-  //           });
+  let userList = toJS(users);
 
-  //           return activityStore.loading ? <Loader center size="lg" /> : <ActivityDetails {...activityStore.activity} />;
-  //         }
+  console.log(userList);
 
   const userListProgress = userList.map(el => {
+    console.log(el);
     const speaker = (
       <Popover title="Прогресс">
         <div
@@ -87,7 +79,7 @@ const ActivityDetails = () => {
             marginRight: 10,
           }}
         >
-          <Circle percent={el.records[el.records.length - 1].value} strokeColor="#ffc107" />
+          <Circle percent={el.records.length === 0 ? 0 : el.records[el.records.length - 1].value} strokeColor="#ffc107" />
         </div>
       </Popover>
     );
@@ -103,11 +95,11 @@ const ActivityDetails = () => {
   });
 
   return (
-    <Panel bordered header={'caption'} className="activity_details">
+    <Panel bordered header={caption} className="activity_details">
       <IconButton color="red" className="delete-button" size="lg" icon={<Icon icon="trash-o" />} circle />
       <FlexboxGrid justify="space-between">
         <FlexboxGrid.Item colspan={6}>
-          <p>{'text'}</p>
+          <p>{text}</p>
           <Icon icon="peoples" />
           <span>{userList.length}</span>
         </FlexboxGrid.Item>
@@ -126,6 +118,6 @@ const ActivityDetails = () => {
       </Form>
     </Panel>
   );
-};
+});
 
 export default ActivityDetails;
