@@ -1,5 +1,6 @@
 .activities_item {
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .activities_item:hover {

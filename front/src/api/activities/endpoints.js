@@ -6,6 +6,12 @@ export async function getActivities() {
   return res.data;
 }
 
+export async function getActivity(data) {
+  const res = await axios.get(`/api/challenge/?id=${data}`);
+
+  return res.data;
+}
+
 export async function createActivity(data) {
   console.log(data);
 

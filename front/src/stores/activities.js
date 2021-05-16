@@ -3,11 +3,16 @@ import { makeAutoObservable } from 'mobx';
 import * as api from '../api/activities';
 
 class ActivitiesStore {
+  _activity = undefined;
   _activities = undefined;
   _loading = false;
 
   get activities() {
     return this._activities;
+  }
+
+  get activity() {
+    return this._activity;
   }
 
   get loading() {
@@ -31,6 +36,23 @@ class ActivitiesStore {
     this._loading = false;
   }
 
+  async getActivity(id) {
+    let res;
+
+    this._loading = true;
+
+    try {
+      res = await api.getActivity(id);
+    } catch (error) {
+      this._loading = false;
+
+      return;
+    }
+
+    this._activity = res;
+    this._loading = false;
+  }
+
   async createActivity(data) {
     try {
       await api.createActivity(data);
@@ -46,7 +68,7 @@ class ActivitiesStore {
   }
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, { _loading: false });
   }
 }
 

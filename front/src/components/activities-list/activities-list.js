@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Row, Col } from 'rsuite';
